@@ -10,15 +10,14 @@ import { useRouter, usePathname } from 'next/navigation'
 interface Navigation {
 	name: string;
 	href: string;
-	current: boolean;
 }
 
 const navigations: Navigation[] = [
-	{ name: 'Dashboard', href: '/dashboard', current: false },
-	{ name: 'Team', href: '/team', current: false },
-	{ name: 'Projects', href: '/projects', current: false },
-	{ name: 'Calendar', href: '/calender', current: false },
-	{ name: 'Contacts', href: '/contacts', current: false }
+	{ name: 'Dashboard', href: '/dashboard' },
+	{ name: 'Projects', href: '/projects' },
+	{ name: 'Events', href: '/events' },
+	{ name: 'Resources', href: '/resources' },
+	{ name: 'Members', href: '/members' }
 ];
 
 function classNames(...classes: string[]) {
