@@ -1,43 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import type { BadgeProps } from 'antd';
-import { Badge, Calendar } from 'antd';
+import { Badge, Calendar, Popover, Button } from 'antd';
 import type { Dayjs } from 'dayjs';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 
-// import { appointments } from './demo_data/data';
+import { events } from './demo_data/data';
 
 // const currentDate: Date = new Date();
 // const date_str = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
 
 const getListData = (value: Dayjs) => {
-	let listData;
-	switch (value.date()) {
-		case 8:
-			listData = [
-				{ type: 'warning', content: 'This is warning event.' },
-				{ type: 'success', content: 'This is usual event.' },
-			];
-			break;
-		case 10:
-			listData = [
-				{ type: 'warning', content: 'This is warning event.' },
-				{ type: 'success', content: 'This is usual event.' },
-				{ type: 'error', content: 'This is error event.' },
-			];
-			break;
-		case 15:
-			listData = [
-				{ type: 'warning', content: 'This is warning event' },
-				{ type: 'success', content: 'This is very long usual event。。....' },
-				{ type: 'error', content: 'This is error event 1.' },
-				{ type: 'error', content: 'This is error event 2.' },
-				{ type: 'error', content: 'This is error event 3.' },
-				{ type: 'error', content: 'This is error event 4.' },
-			];
-			break;
-		default:
-	}
-	return listData || [];
+	const event_data = events.filter((obj) => obj.date === value.date());
+	return event_data || [];
 };
 
 const getMonthData = (value: Dayjs) => {
@@ -60,21 +34,35 @@ export default function Calender() {
 	const dateCellRender = (value: Dayjs) => {
 		const listData = getListData(value);
 		return (
-			<ul className="list-none p-0 m-0">
-				{listData.map((item) => (
-					<li key={item.content}>
-						<Badge className='w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap ' status={item.type as BadgeProps['status']} text={item.content} />
-					</li>
-				))}
-			</ul>
+			// <div className='w-full h-32 border border-slate-300 text-black text-center cursor-default'>
+				// <h3>{value.date()}</h3>
+				<ul className="list-none p-0 m-0">
+					{listData.map((item) => (
+						<li key={item.content}>
+							<Popover className='w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap z-10' content={item.content}>
+								<button className='inline-block px-3 py-2 my-1 rounded bg-lime-600 hover:bg-lime-300 transition duration-300'> {item.type as BadgeProps['status']} </button>
+							</ Popover>
+						</li>
+					))}
+				</ul>
+			//* </div> */}
 		);
 	};
 
-	const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
-		if (info.type === 'date') return dateCellRender(current);
-		if (info.type === 'month') return monthCellRender(current);
-		return info.originNode;
-	};
+// 	const fullCellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
+// 		if (info.type === 'date') return dateCellRender(current);
+// 		if (info.type === 'month') return monthCellRender(current);
+// 		return info.originNode;
+// 	};
 
-	return <Calendar cellRender={cellRender} />;
+// 	return <Calendar fullCellRender={fullCellRender} />;
+// };
+
+const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
+	if (info.type === 'date') return dateCellRender(current);
+	if (info.type === 'month') return monthCellRender(current);
+	return info.originNode;
+};
+
+return <Calendar cellRender={cellRender} />;
 };
