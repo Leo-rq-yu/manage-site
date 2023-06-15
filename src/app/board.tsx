@@ -50,7 +50,7 @@ const selectDept = (department: number): string => {
 export default function Board() {
 	const [cards, setCards] = useState<task[]>([]);
 	const effectRan = useRef(false);
-	const carouselRef = useRef(null);
+	const carouselRef = useRef<any>(null);
 
 	const pageSize = 4; // Number of cards to display on each page
 
