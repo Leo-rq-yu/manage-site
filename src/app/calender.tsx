@@ -131,13 +131,13 @@ export default function Calender() {
 				<div style={{ padding: 8 }}>
 					<Row gutter={8} justify={'space-between'}>
 						<div>
-							<Badge color='red' text='活动部' className='mr-2' />
-							<Badge color='cyan' text='学术部' className='mr-2' />
-							<Badge color='green' text='外联部' className='mr-2' />
-							<Badge color='purple' text='宣传部' className='mr-2' />
-							<Badge color='yellow' text='人事部' className='mr-2' />
-							<Badge color='blue' text='财务部' className='mr-2' />
-							<Badge color='orange' text='技术部' className='mr-2' />
+							<Badge color='red' text='Department 1' className='mr-2' />
+							<Badge color='cyan' text='Department 2' className='mr-2' />
+							<Badge color='green' text='Department 3' className='mr-2' />
+							<Badge color='purple' text='Department 4' className='mr-2' />
+							<Badge color='yellow' text='Department 5' className='mr-2' />
+							<Badge color='blue' text='General' className='mr-2' />
+							<Badge color='orange' text='Board' className='mr-2' />
 						</div>
 						<Row>
 							<Col>
