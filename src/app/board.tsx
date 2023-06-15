@@ -29,19 +29,19 @@ const selectColor = (department: number): string => {
 const selectDept = (department: number): string => {
 	switch (department) {
 		case (1):
-			return '活动部'
+			return 'Department 1'
 		case (2):
-			return '学术部'
+			return 'Department 2'
 		case (3):
-			return '外联部'
+			return 'Department 3'
 		case (4):
-			return '宣传部'
+			return 'Department 4'
 		case (5):
-			return '人事部'
+			return 'Department 5'
 		case (6):
-			return '财务部'
+			return 'Department 6'
 		case (7):
-			return '技术部'
+			return 'Department 7'
 		default:
 			return ''
 	}
@@ -50,7 +50,7 @@ const selectDept = (department: number): string => {
 export default function Board() {
 	const [cards, setCards] = useState<task[]>([]);
 	const effectRan = useRef(false);
-	const carouselRef = useRef(null);
+	const carouselRef = useRef<any>(null);
 
 	const pageSize = 4; // Number of cards to display on each page
 
