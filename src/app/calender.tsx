@@ -1,68 +1,173 @@
-import React, { useState, useEffect } from 'react';
-import type { BadgeProps } from 'antd';
-import { Badge, Calendar, Popover, Button } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Badge, Calendar, Popover, Col, Radio, Row, Select, theme } from 'antd';
+import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
+import dayLocaleData from 'dayjs/plugin/localeData';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 
-import { events } from './demo_data/data';
+import { event, events } from './demo_data/data';
 
 // const currentDate: Date = new Date();
 // const date_str = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
 
-const getListData = (value: Dayjs) => {
-	const event_data = events.filter((obj) => obj.date === value.date());
-	return event_data || [];
-};
-
-const getMonthData = (value: Dayjs) => {
-	if (value.month() === 8) {
-		return 1394;
+const selectColor = (department: number): string => {
+	switch (department) {
+		case (1):
+			return 'inline-block px-3 py-2 my-1 rounded bg-red-600 hover:bg-red-400 transition duration-300'
+		case (2):
+			return 'inline-block px-3 py-2 my-1 rounded bg-cyan-600 hover:bg-cyan-400 transition duration-300'
+		case (3):
+			return 'inline-block px-3 py-2 my-1 rounded bg-green-600 hover:bg-green-400 transition duration-300'
+		case (4):
+			return 'inline-block px-3 py-2 my-1 rounded bg-purple-600 hover:bg-purple-300 transition duration-300'
+		case (5):
+			return 'inline-block px-3 py-2 my-1 rounded bg-yellow-600 hover:bg-yellow-300 transition duration-300'
+		case (6):
+			return 'inline-block px-3 py-2 my-1 rounded bg-blue-600 hover:bg-blue-300 transition duration-300'
+		case (7):
+			return 'inline-block px-3 py-2 my-1 rounded bg-orange-600 hover:bg-orange-400 transition duration-300'
+		default:
+			return ''
 	}
-};
+}
+
+dayjs.extend(dayLocaleData);
 
 export default function Calender() {
-	const monthCellRender = (value: Dayjs) => {
-		const num = getMonthData(value);
-		return num ? (
-			<div className="text-lg text-center">
-				<section className='text-lg'>{num}</section>
-				<span>Backlog number</span>
-			</div>
-		) : null;
+	const [buttons, setButtons] = useState<event[]>([]);
+	const effectRan = useRef(false);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			// fetch('your-events-api-url')
+			// .then((response) => response.json())
+			// .then((data) => {
+			// 	setButtons(data); // Update the events state with the fetched data
+			// })
+			// .catch((error) => {
+			// 	console.error('Error fetching events:', error);
+			// });
+			setTimeout(() => {
+				setButtons(events);
+			}, 1000);
+		};
+		if (effectRan.current === false) {
+			fetchData();
+		}
+		return () => {
+			setButtons([]);
+			effectRan.current = true;
+		}
+	}, []);
+
+	const getListData = (value: Dayjs) => {
+		const event_data = buttons.filter((obj) => obj.date === value.date());
+		return event_data || [];
 	};
 
 	const dateCellRender = (value: Dayjs) => {
 		const listData = getListData(value);
 		return (
-			// <div className='w-full h-32 border border-slate-300 text-black text-center cursor-default'>
-				// <h3>{value.date()}</h3>
-				<ul className="list-none p-0 m-0">
-					{listData.map((item) => (
-						<li key={item.content}>
-							<Popover className='w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap z-10' content={item.content}>
-								<button className='inline-block px-3 py-2 my-1 rounded bg-lime-600 hover:bg-lime-300 transition duration-300'> {item.type as BadgeProps['status']} </button>
-							</ Popover>
-						</li>
-					))}
-				</ul>
-			//* </div> */}
+			<ul className="list-none p-0 m-0">
+				{listData.map((item, index) => (
+					<li key={index}>
+						<Popover className='w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap animate-fade animate-once animate-delay-1000' title={item.title} content={item.content}>
+							<button className={selectColor(item.department)}> {item.title} </button>
+						</ Popover>
+					</li>
+				))}
+			</ul>
 		);
 	};
 
-// 	const fullCellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
-// 		if (info.type === 'date') return dateCellRender(current);
-// 		if (info.type === 'month') return monthCellRender(current);
-// 		return info.originNode;
-// 	};
+	// 	const fullCellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
+	// 		if (info.type === 'date') return dateCellRender(current);
+	// 		if (info.type === 'month') return monthCellRender(current);
+	// 		return info.originNode;
+	// 	};
 
-// 	return <Calendar fullCellRender={fullCellRender} />;
-// };
+	// 	return <Calendar fullCellRender={fullCellRender} />;
+	// };
 
-const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
-	if (info.type === 'date') return dateCellRender(current);
-	if (info.type === 'month') return monthCellRender(current);
-	return info.originNode;
-};
+	const cellRender = (current: Dayjs, info: CellRenderInfo<Dayjs>) => {
+		if (info.type === 'date') return dateCellRender(current);
+		return info.originNode;
+	};
 
-return <Calendar cellRender={cellRender} />;
+	return <Calendar
+		cellRender={cellRender}
+		headerRender={({ value, type, onChange, onTypeChange }) => {
+			const start = 0;
+			const end = 12;
+			const monthOptions = [];
+
+			let current = value.clone();
+			const localeData = value.localeData();
+			const months = [];
+			for (let i = 0; i < 12; i++) {
+				current = current.month(i);
+				months.push(localeData.monthsShort(current));
+			}
+
+			for (let i = start; i < end; i++) {
+				monthOptions.push(
+					<Select.Option key={i} value={i} className="month-item">
+						{months[i]}
+					</Select.Option>,
+				);
+			}
+
+			const year = value.year();
+			const month = value.month();
+			const options = [];
+			for (let i = year - 10; i < year + 10; i += 1) {
+				options.push(
+					<Select.Option key={i} value={i} className="year-item">
+						{i}
+					</Select.Option>,
+				);
+			}
+			return (
+				<div style={{ padding: 8 }}>
+					<Row gutter={8} justify={'space-between'}>
+						<div>
+							<Badge color='red' text='活动部' className='mr-2' />
+							<Badge color='cyan' text='学术部' className='mr-2' />
+							<Badge color='green' text='外联部' className='mr-2' />
+							<Badge color='purple' text='宣传部' className='mr-2' />
+							<Badge color='yellow' text='人事部' className='mr-2' />
+							<Badge color='blue' text='财务部' className='mr-2' />
+							<Badge color='orange' text='技术部' className='mr-2' />
+						</div>
+						<Row>
+							<Col>
+								<Select
+									size="small"
+									className="my-year-select"
+									value={year}
+									onChange={(newYear) => {
+										const now = value.clone().year(newYear);
+										onChange(now);
+									}}
+								>
+									{options}
+								</Select>
+							</Col>
+							<Col>
+								<Select
+									size="small"
+									value={month}
+									onChange={(newMonth) => {
+										const now = value.clone().month(newMonth);
+										onChange(now);
+									}}
+								>
+									{monthOptions}
+								</Select>
+							</Col>
+						</Row>
+					</Row>
+				</div>
+			);
+		}} />;
 };
