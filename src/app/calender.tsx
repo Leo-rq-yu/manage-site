@@ -13,19 +13,19 @@ import { event, events } from './demo_data/data';
 const selectColor = (department: number): string => {
 	switch (department) {
 		case (1):
-			return 'inline-block px-3 py-2 my-1 rounded bg-red-600 hover:bg-red-400 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-red-500 hover:bg-red-400 transition duration-300'
 		case (2):
-			return 'inline-block px-3 py-2 my-1 rounded bg-cyan-600 hover:bg-cyan-400 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-cyan-500 hover:bg-cyan-400 transition duration-300'
 		case (3):
-			return 'inline-block px-3 py-2 my-1 rounded bg-green-600 hover:bg-green-400 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-green-500 hover:bg-green-400 transition duration-300'
 		case (4):
-			return 'inline-block px-3 py-2 my-1 rounded bg-purple-600 hover:bg-purple-300 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-purple-500 hover:bg-purple-300 transition duration-300'
 		case (5):
-			return 'inline-block px-3 py-2 my-1 rounded bg-yellow-600 hover:bg-yellow-300 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-yellow-500 hover:bg-yellow-300 transition duration-300'
 		case (6):
-			return 'inline-block px-3 py-2 my-1 rounded bg-blue-600 hover:bg-blue-300 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-blue-500 hover:bg-blue-300 transition duration-300'
 		case (7):
-			return 'inline-block px-3 py-2 my-1 rounded bg-orange-600 hover:bg-orange-400 transition duration-300'
+			return 'inline-block px-3 py-2 my-1 rounded bg-orange-500 hover:bg-orange-400 transition duration-300'
 		default:
 			return ''
 	}

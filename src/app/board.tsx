@@ -64,10 +64,10 @@ export default function Board() {
 				setCards(tasks);
 			}, 2000);
 		};
-		// if (effectRan.current === false) {
-		fetchData();
-		console.log("fetch data!");
-		// }
+		if (effectRan.current === false) {
+			fetchData();
+			console.log("fetch data!");
+		}
 		return () => {
 			setCards([]);
 			effectRan.current = true;
@@ -104,18 +104,18 @@ export default function Board() {
 	// 	return 
 	// }
 
-	return cards.length > 0 ?(
+	return cards.length > 0 ? (
 		<div>
 			<Carousel ref={carouselRef} dotPosition='top' draggable dots={false} >
 				{renderCarouselPages()}
 			</Carousel>
 			<div className='w-full flex flex-row justify-center self-bottom animate-fade animate-delay-1000'>
-				<button className='px-4 py-2 rounded-l-2xl border-solid border-slate-400 border' onClick={() => { carouselRef.current?.prev(); }}> <LeftOutlined style={{fontSize: '2rem'}} /> </button>
-				<button className='px-4 py-2 rounded-r-2xl border-solid border-slate-400 border' onClick={() => { carouselRef.current?.next(); }}> <RightOutlined style={{fontSize: '2rem'}}/> </button>
+				<button className='px-4 py-2 rounded-l-2xl border-solid border-slate-400 border' onClick={() => { carouselRef.current?.prev(); }}> <LeftOutlined style={{ fontSize: '2rem' }} /> </button>
+				<button className='px-4 py-2 rounded-r-2xl border-solid border-slate-400 border' onClick={() => { carouselRef.current?.next(); }}> <RightOutlined style={{ fontSize: '2rem' }} /> </button>
 			</div>
 		</div>
 
 	) : (
-		<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} className='px-10 py-72 rounded-lg text-2xl font-sans' description="All Tasks Complete"/>
+		<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} className='px-10 py-72 rounded-lg text-2xl font-sans' description="All Tasks Complete" />
 	);
 };
