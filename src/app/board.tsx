@@ -74,7 +74,7 @@ export default function Board({ openModal2, createEvent, cards }: ChildComponent
 			const page = (
 				<div key={i} className=''>
 					{pageCards.map((card, index) => (
-						<Badge.Ribbon key={index} text={selectDept(card.department)} color={selectColor(card.department)} className='mr-9 animate-fade-left animate-delay-1000'>
+						<Badge.Ribbon key={index} text={selectDept(card.department)} color={selectColor(card.department)} className={`mr-9 ${card.completed ? 'hidden' :'animate-fade-left animate-delay-1000'}`}>
 							<Card hoverable
 								title={card.title}
 								bordered={true}
