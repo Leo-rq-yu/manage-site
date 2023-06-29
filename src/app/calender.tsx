@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Badge, Calendar, Popover, Col, Radio, Row, Select, theme } from 'antd';
+import { Badge, Calendar, Popover, Col, Row, Select, Button } from 'antd';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import dayLocaleData from 'dayjs/plugin/localeData';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 
-import { event, events } from './demo_data/data';
+import { event } from './demo_data/data';
 
 // const currentDate: Date = new Date();
 // const date_str = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
@@ -31,34 +31,18 @@ const selectColor = (department: number): string => {
 	}
 }
 
+interface ChildComponentProps {
+	openModal1: (title: string, content: string) => void,
+	buttons: event[]
+}
+
 dayjs.extend(dayLocaleData);
 
-export default function Calender() {
-	const [buttons, setButtons] = useState<event[]>([]);
-	const effectRan = useRef(false);
+export default function Calender({ openModal1, buttons }: ChildComponentProps ) {
 
-	useEffect(() => {
-		const fetchData = async () => {
-			// fetch('your-events-api-url')
-			// .then((response) => response.json())
-			// .then((data) => {
-			// 	setButtons(data); // Update the events state with the fetched data
-			// })
-			// .catch((error) => {
-			// 	console.error('Error fetching events:', error);
-			// });
-			setTimeout(() => {
-				setButtons(events);
-			}, 1000);
-		};
-		if (effectRan.current === false) {
-			fetchData();
-		}
-		return () => {
-			setButtons([]);
-			effectRan.current = true;
-		}
-	}, []);
+	const showModal = (title: string, content: string) => {
+		openModal1(title, content);
+	};
 
 	const getListData = (value: Dayjs) => {
 		const event_data = buttons.filter((obj) => obj.date === value.date());
@@ -72,7 +56,7 @@ export default function Calender() {
 				{listData.map((item, index) => (
 					<li key={index}>
 						<Popover className='w-full overflow-hidden text-xs text-ellipsis whitespace-nowrap animate-fade animate-once animate-delay-1000' title={item.title} content={item.content}>
-							<button className={selectColor(item.department)}> {item.title} </button>
+							<button className={selectColor(item.department)} onClick={() => showModal(item.title, item.content)}> {item.title} </button>
 						</ Popover>
 					</li>
 				))}

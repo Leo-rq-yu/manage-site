@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Carousel, Card, Badge, Empty } from 'antd';
-import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import { RightOutlined, LeftOutlined, EditOutlined, PlusOutlined, CheckCircleFilled } from '@ant-design/icons';
 import parse from 'html-react-parser';
 
-import { task, tasks } from './demo_data/tasks';
+import { task } from './demo_data/tasks';
 
 const selectColor = (department: number): string => {
 	switch (department) {
@@ -47,32 +47,21 @@ const selectDept = (department: number): string => {
 	}
 }
 
-export default function Board() {
-	const [cards, setCards] = useState<task[]>([]);
-	const effectRan = useRef(false);
+
+interface ChildComponentProps {
+	openModal2: (title: string, content: string, department: number, id: number) => void,
+	createEvent: (task: task) => void,
+	cards: task[]
+}
+
+export default function Board({ openModal2, createEvent, cards }: ChildComponentProps) {
 	const carouselRef = useRef<any>(null);
 
-	const pageSize = 4; // Number of cards to display on each page
+	const pageSize = 3; // Number of cards to display on each page
 
-	useEffect(() => {
-		// Simulate fetching data from a database
-		const fetchData = async () => {
-			// Replace this with your actual API call
-
-			// Simulate network delay
-			setTimeout(() => {
-				setCards(tasks);
-			}, 2000);
-		};
-		if (effectRan.current === false) {
-			fetchData();
-			console.log("fetch data!");
-		}
-		return () => {
-			setCards([]);
-			effectRan.current = true;
-		}
-	}, []);
+	const showModal = (title: string, content: string, department: number, id: number) => {
+		openModal2(title, content, department, id);
+	};
 
 	const renderCarouselPages = () => {
 		// if (!cards) return <Empty description='No Task'/>
@@ -86,7 +75,15 @@ export default function Board() {
 				<div key={i} className=''>
 					{pageCards.map((card, index) => (
 						<Badge.Ribbon key={index} text={selectDept(card.department)} color={selectColor(card.department)} className='mr-9 animate-fade-left animate-delay-1000'>
-							<Card hoverable title={card.title} bordered={true} className={'my-6 mx-6 w-11/12 shadow-md shadow-slate-400 animate-fade-left animate-delay-1000'}>
+							<Card hoverable
+								title={card.title}
+								bordered={true}
+								className={`my-6 mx-6 w-11/12 shadow-md shadow-slate-400 ${card.completed ? 'animate-delay-1000 animate-jump-out animate-once' : 'animate-fade-left animate-delay-1000'}`}
+								actions={[
+									card.completed ? <CheckCircleFilled key='complete' className='text-green-500' /> : <EditOutlined key="edit" onClick={() => showModal(card.title, card.content, card.department, card.id)} />,
+									<PlusOutlined key="add" onClick={() => createEvent(card)} />,
+								]}
+							>
 								<p>{parse(card.content)}</p>
 							</Card>
 						</Badge.Ribbon>
